@@ -1,0 +1,9 @@
+<form action="{% url 'round2:create_user' %}" method="post">
+    {% csrf_token %}
+    <input type="text" id = "login_user_name" name ="login_user_name">
+    <br>
+    <input type="text" id = "login_password" name ="login_password">
+    <br>
+    <input type="submit" value="Login">
+
+</form>

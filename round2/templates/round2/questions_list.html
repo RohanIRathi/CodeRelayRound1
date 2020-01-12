@@ -1,0 +1,196 @@
+<style>
+  div.fixed {
+    position: fixed;
+    margin-left:80%;
+    margin-top:0%;
+
+}
+#code_editor1,#code_editor2,#code_editor3,#code_editor4,#code_editor5,#message_display{
+	width: 75%;
+	height:10%;
+		border: 0.5px solid; border-color: #E4E4E4;
+		background:#ffffff;
+		  margin-left: 3%;  margin-bottom: 2%;
+		padding: 1%;
+		font-size:150%;
+		font-family:Comic Sans MS;
+	}
+	body{
+		background: #F3F3FF;
+		          font-family: Arial, Helvetica, sans-serif;
+	}
+
+a:link {
+    color: #0C090A;
+    background-color: transparent;
+    text-decoration: none;
+}
+a:visited {
+    color: #33348e;
+    background-color: transparent;
+    text-decoration: none;
+}
+a:hover {
+    color: #625D5D;
+    background-color: transparent;
+    text-decoration: underline;
+}
+a:active {
+    color: #33348e;
+    background-color: transparent;
+    text-decoration: underline;
+}
+
+
+
+h1{
+font-size:250%;
+
+ font-family: "Comic Sans MS";
+
+}
+input[type="submit"],button{
+/* change these properties to whatever you want */
+ width="50";
+ height="0.5";
+ padding: 6px 17px;
+
+  font-size: 15px;
+  text-align: center;
+  cursor: pointer;
+background-color: #6D6968;
+color: #fff;
+border-radius: 4px;
+}
+input[type="submit"]:hover {background-color: #D1D0DE;
+border-radius:7px;
+color: #2C3539;
+
+}
+button:hover {background-color: #D1D0DE;
+border-radius:7px;
+color: #2C3539;
+
+}
+table,th,td{
+
+border-collapse:collapse;
+background-color:#ffffff;
+
+ font-family:"Comic Sans MS";
+}
+
+</style>
+<body >
+
+    <h1 STYLE="margin-left:10%; ">Problem Statements </h1>
+<div class="fixed">
+    <label type="label" style= "background-color:black;color:#F3F3F3;font-family:courier;font-size:300%;margin-top:-15px;  " border="0"><b>
+      <span id="time1"></span></b>
+
+    </label>
+</div>
+
+
+
+
+
+<table style="margin-left:3%; width:75%; height:70%;">
+    <tr  id="title" style=" font-weight: bold; font-size:145%;border:2px solid #E4E4E4;"><th>SOLVE PROBLEM</th> <th>YOUR SCORE</th><th> MAX SCORES </th></tr>
+{% for question in all_questions %}
+
+<tr id="{{forloop.counter}}" STYLE="border:1px solid #E4E4E4;"><td><a href="{% url 'round2:question_details' user_id question.pk  %}" style=" font-size: 150%; text-align:left; margin-left:10%;">{{question}}</a></td>
+    {% for marks in all_marks %}
+    {% ifequal forloop.parentloop.counter forloop.counter %}
+    <td style="text-align:center;">{{marks}}</td><td style="text-align:center;">
+    {% ifequal forloop.counter 1 %}
+        {{one}}
+     {% endifequal %}
+     {% ifequal forloop.counter 2 %}
+        {{two}}
+     {% endifequal %}
+     {% ifequal forloop.counter 3 %}
+        {{three}}
+     {% endifequal %}
+        {% ifequal forloop.counter 4 %}
+        {{four}}
+     {% endifequal %}
+        {% ifequal forloop.counter 5 %}
+        {{five}}
+     {% endifequal %}
+
+    </td></tr>
+    {% endifequal %}
+    {% endfor %}
+ {% endfor %}
+</table>
+
+
+<form action="{% url 'round2:leaderboard' user_id %}" method="post">
+    {% csrf_token %}
+    <input type="submit" name="leader" id="leader" value="View Leaderboard" style="margin-left:70%;margin-top:3%;">
+
+</form>
+    <button onclick="prompt_user()" style="margin-left:75%;" >Finish</button>
+
+<script>
+    function prompt_user(){
+    if (confirm('Are you sure you want to save this thing into the database?')) {
+    window.location.replace(" {%url 'round2:leaderboard' user_id %}" );
+} else {
+    // Do nothing!
+}
+    }
+</script>
+
+</body>
+<script type="text/javascript">
+
+          function startTimer(duration, display)
+          {
+        var start = Date.now(),
+
+        diff,
+        minutes,
+        seconds;
+
+        function timer() {
+        // get the number of seconds that have elapsed since
+        // startTimer() was called
+        diff = duration - (((Date.now() - start) / 1000) | 0);
+
+        // does the same job as parseInt truncates the float
+        hours = (diff / 3600) | 0;
+        minutes = ((diff/60)%60) | 0;
+        seconds = (diff % 60) | 0;
+        hours = hours < 10 ? "0" + hours : hours;
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+        display.textContent =hours+ ":" + minutes + ":" + seconds;
+
+
+        if (diff <= 0) {
+            // add one second so that the count down starts at the full duration
+            // example 05:00 not 04:59
+           // start = Date.now() + 1000;
+          // window.location.replace("http:/comp/leaderboard/" );
+           window.location.replace(" {%url 'round2:instruction_view' user_id %}");
+
+        }
+
+    };
+    // we don't want to wait a full second before the timer starts
+    timer();
+    setInterval(timer, 1000);
+}
+window.onload = function ()
+{
+    var v = "{{remaining_time}}";
+
+    display = document.querySelector('#time1');
+    startTimer( v, display);
+};
+
+</script>
+

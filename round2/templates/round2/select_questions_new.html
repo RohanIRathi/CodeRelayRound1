@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load staticfiles %}
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <meta charset="utf-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="{% static '/css/font.css' %}" rel="stylesheet">
+    <script src="{% static '/js/jquery.min.js' %}"></script>
+    <link rel="stylesheet"
+          href="{% static '/css/jquery-ui.min.css' %}">
+    <script src="{% static '/js/jquery-ui.min.js' %}"></script>
+
+    <link rel="stylesheet" href="{% static '/css/bootstrap.min.css' %}">
+
+
+    <script src="{% static '/js/bootstrap.min.js' %}"></script>
+
+    <style>
+        .leader {
+            background: whitesmoke;
+        }
+    </style>
+</head>
+<body>
+<br>
+<div class="container-fluid">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-2">
+
+                <img alt="EarnCode"
+                     src="{% static '/round2/images/ea.png' %}" width="100%">
+
+            </div>
+            <div class="col-md-4">
+                <h2 style="margin-top: 60px;">CODE RELAY</h2>
+            </div>
+            
+            <div class="col-md-2 col-md-offset-1 text-right">
+                <div class="row"><h4 style="margin-top: 30px; margin-bottom: -5px; magin-right:10px">TIME</h4></div>
+                <div class="row"><h2><span id="time1">time</span></h2></div>
+            </div>
+
+        </div>
+    </div>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+
+                    <li id="instruction_tab"><a onclick="showInstructions();">Instructions</a></li>
+                    <li class="active" id="question_tab"><a onclick="showQuestions()">Question list</a></li>
+
+                </ul>
+
+                <form action="{% url 'round2:leaderboard' user_id %}" method="post" class="navbar-form navbar-right"
+                      style="margin-bottom: -8px;margin-top: 1px;">
+                    {% csrf_token %}
+                    <!--<button type="submit" class="btn btn-default navbar-btn" id="leader" name="leader" value="test">View
+                        Leaderboard
+                    </button>-->
+                    <button type="button" class="btn btn-default navbar-btn btn-danger" onclick="prompt_user()">
+                        Finish
+                    </button>
+
+                </form>
+            </div><!-- /.navbar-collapse -->
+        </div><!-- /.container-fluid -->
+    </nav>
+
+
+    <div class="row">
+
+
+    </div>
+
+    <br>
+    <div class="row leader" id="question_list">
+        <div class="table-responsive">
+                    <h1 style="font-size: 200%;">Problem Statement</h1>
+                {% for question in question_list %}
+                <a href="{% url 'round2:question_details' user_id question.question.pk %}"
+                               style=" font-size: 150%; text-align:center; margin-left:10%;">{{ question.question.question_title }}</a>
+                {% endfor %}
+        </div>
+    </div>
+
+</div>
+<div id="instruction" style="display: none;" class="container text-center">
+
+    <div class="row">
+
+        <div class="login-form col-md-6 col-md-offset-3">
+
+            <ol>
+                <p>
+                <li> Second round consists of 4 problem statements which has 2 hours as the time limit.</li>
+                <br>
+
+                <li>This Round consists of 2 easy level questions, 2 medium level questions</li>
+                <br>
+
+                <li>Each easy level question is for 50 marks,Medium level question is for 100 marks
+                </li>
+
+                <br>
+                <li>You are not suppose to press back and refresh buttons else you will be disqualified.</li>
+                <br>
+
+
+                </p>
+            </ol>
+
+        </div>
+    </div>
+
+</div>
+
+<script>
+        history.pushState(null, null, document.title);
+        window.addEventListener('popstate', function () {
+            history.pushState(null, null, document.title);
+            alert('The only way is Ahead..!!!');
+        });
+    </script>
+
+</body>
+
+<script type="text/javascript">
+
+    function startTimer(duration, display) {
+        var start = Date.now(),
+
+            diff,
+            minutes,
+            seconds;
+
+        function timer() {
+            // get the number of seconds that have elapsed since
+            // startTimer() was called
+            diff = duration - (((Date.now() - start) / 1000) | 0);
+
+            // does the same job as parseInt truncates the float
+            hours = (diff / 3600) | 0;
+            minutes = ((diff / 60) % 60) | 0;
+            seconds = (diff % 60) | 0;
+            hours = hours < 10 ? "0" + hours : hours;
+            minutes = minutes < 10 ? "0" + minutes : minutes;
+            seconds = seconds < 10 ? "0" + seconds : seconds;
+
+            display.textContent = hours + ":" + minutes + ":" + seconds;
+
+
+            if (diff <= 0) {
+                // add one second so that the count down starts at the full duration
+                // example 05:00 not 04:59
+                // start = Date.now() + 1000;
+                // window.location.replace("http:/comp/leaderboard/" );
+                window.location.replace(" {%url 'round2:instruction_view' user_id %}");
+            }
+
+        };
+        // we don't want to wait a full second before the timer starts
+        timer();
+        setInterval(timer, 1000);
+    }
+
+    window.onload = function () {
+        var v = "{{remaining_time}}";
+
+        display = document.querySelector('#time1');
+        startTimer(v, display);
+    };
+
+</script>
+<script>
+    function prompt_user() {
+        if (confirm('Are you sure you want to save this thing into the database?')) {
+            window.location.replace(" {%url 'round2:leaderboard' user_id %}");
+        } else {
+            // Do nothing!
+        }
+    }
+</script>
+<script>
+    function showInstructions() {
+        document.getElementById('question_list').style.display = "none";
+        document.getElementById('question_tab').classList.remove('active');
+        document.getElementById('instruction').style.display = "block";
+        document.getElementById('instruction_tab').className += "active";
+
+    }
+</script>
+<script>
+    function showQuestions() {
+        document.getElementById('instruction').style.display = "none";
+        document.getElementById('instruction_tab').classList.remove('active');
+        document.getElementById('question_list').style.display = "block";
+        document.getElementById('question_tab').className += "active";
+
+    }
+</script>
+</html>

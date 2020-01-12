@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+
+    <link href="https://fonts.googleapis.com/css?family=Merriweather:900" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet"
+          href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.min.css">
+    <script src="http://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <style>
+        .leader {
+            background: whitesmoke;
+        }
+    </style>
+</head>
+<body>
+<br>
+<div class="container">
+        <center>
+            {% if leaderboard_clicked %}
+                <form action="{% url 'round2:question' user_id %}">
+                    <input class="btn btn-primary" type="submit" name="back" id="back" value="Back">
+
+                </form>
+            {% else %}
+            	<script>
+            		history.pushState(null, null, document.title);
+			window.addEventListener('popstate', function () {
+			    history.pushState(null, null, document.title);
+			    alert('The only way is Ahead..!!!');
+			});
+		</script>
+            {% endif %}
+
+        </center>
+    <div class="row">
+        <div STYLE="text-align: center; font-weight: bolder" class="col-md-4 col-md-offset-4">
+            <H3>LEADER BOARD</H3>
+		<form action="{% url 'round2:register' %}">
+			<input class="btn btn-primary" style="margin: auto; margin-bottom: 20px;" type="submit" name="home" id="home" value="Home">
+		</form>
+        </div>
+    </div>
+    <div class="row leader">
+        <div class="table-responsive">
+            <table class="table table-bordered white">
+                <thead class="thead-inverse">
+                <tr>
+                    <th style="width:4%">RANK</th>
+                    <th>USERNAME</th>
+                    <th>COLLEGE</th>
+                    <th>SCORE</th>
+                </tr>
+                </thead>
+                <tbody id="table_body">
+                {% for user in all_user %}
+
+                    {% ifequal user_id user.pk %}
+
+                        <tr bgcolor="#BBBBBB" style="color:#000000">
+
+                            {% else %}
+                        <tr>
+                    {% endifequal %}
+                <td>{{ forloop.counter }}</td>
+                <td>{{ user.login_name }}</td>
+                <td>{{ user.college_name1 }}</td>
+                <td>{{ user.total_score }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+</body>
+</html>

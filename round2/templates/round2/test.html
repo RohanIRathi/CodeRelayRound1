@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+
+
+<style>
+	body{
+		background: #F3F3F3;
+		          font-family: Arial, Helvetica, sans-serif;
+	}
+
+	#question , #problem_title,#code_editor,#code_editor_label{
+		width: 75%; height: auto;
+		border: 0.5px solid; border-color: #E4E4E4;
+		background:#ffffff;
+		  margin-left: 3%;  margin-bottom: 2%; 
+		padding: 1%;	
+	}
+	#text_area{
+		width: 75%; height: 70%;
+		border: 0.5px solid; border-color: #E4E4E4;
+		background:#ffffff;
+		margin-top: 3%; margin-left: 3%; margin-bottom: 2%; 
+		font-size: 1.2em;padding: 1%;
+	}
+
+	table, th, td {
+	    border: 1px solid;
+	    border-color: #E4E4E4;
+	    border-collapse: collapse;
+	}
+	th, td {
+	    padding: 5px;
+	    text-align: left;    
+	}
+</style>
+
+
+</head>
+<body>
+
+<div id="problem_title" style="margin-bottom: 0px; font-weight: bold; ">Christmas string
+</div>
+
+
+
+
+<div id="question">
+
+<pre>
+	Little Santa is wondering what is the maximum number of names of the nice children in the list that can possibly match with the  
+
+f he will change at most one letter in the string 
+
+ to a star. String 
+
+ can possibly match with the string 
+
+ if letters on non star positions are equal. He is getting late to deliver the gifts so he asked you to solve this.
+
+<table style="width:50%">
+  <tr>
+    <th>Name:</th>
+    <th>test case</th>
+  </tr>
+  <tr>
+    <td rowspan="2">Telephone:<br/>Siddhesh</td>
+    <td rowspan="2">55577854</td>
+  </tr>
+  
+</table>
+
+
+
+
+</pre>
+				
+</div>
+
+<div id="code_editor_label" name = "code_editor_label" style="margin-bottom: 0px; font-weight: bold;">Code Editor</div>
+<div id="code_editor" style="margin-bottom: 0px; font-weight: bold;">Code Editor</div>
+<div id="text_area" style="margin-top: 0px;" ></div>
+</body>
+
+{% load static %}
+<script src="{% static 'codemirror.js' %}"></script>
+<link rel="stylesheet" href="{% static 'codemirror.css' %}">
+<script src="{% static 'clike.js' %}"></script>
+
+<script>
+function code_getter()
+{
+    document.getElementById("")
+}
+var myCodeMirror = CodeMirror(document.getElementById('text_area'), {
+  value: "  ",
+  mode:  "text/x-c++src"
+});
+</script>
+
+
+
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<style>
+
+    body {
+        background: #F3F3FF;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    table, th, td {
+
+        border-collapse: collapse;
+        background-color: #ffffff;
+
+        font-family: serif;
+    }
+</style>
+<head>
+
+
+</head>
+<body>
+<form action="{% url 'round2:leaderboard' user_id %}" method="post">
+    {% csrf_token %}
+    <input type="submit" name="leader" id="leader" value="View Leaderboard" style="margin-left:70%;margin-top:3%;">
+
+</form>
+    <button onclick="prompt_user()" style="margin-left:75%;" >Finish</button>
+
+{{ money }}
+<!--ROUND 2-->
+<h1 STYLE="margin-left:10%; ">Problem Statements </h1>
+<div class="fixed">
+    <label
+            style="background-color:black;color:#F3F3F3;font-family:serif;font-size:300%;margin-top:-15px;  "
+    ><b>
+        <span id="time1"></span></b>
+
+    </label>
+</div>
+<table style="margin-left:3%; width:75%; height:70%;">
+    <tr id="title" style=" font-weight: bold; font-size:145%;border:2px solid #E4E4E4;">
+        <th>Question No</th>
+        <th>DIFFICULTY</th>
+        <th>SOLVE PROBLEM</th>
+        <th>STATUS</th>
+        <th>COST</th>
+        <th>MARKS<th>
+    </tr>
+    {% for question in question_list %}
+
+        <tr id="{{ forloop.counter }}">
+        <td>{{ forloop.counter }}</td>
+        <td>{{ question.difficulty }}</td>
+        <td><a href="{% url 'round2:question_details' user_id question.question.pk %}"
+               style=" font-size: 150%; text-align:left; margin-left:10%;">{{ question.question.question_title }}</a>
+        </td>
+        <td>{{ question.status }}</td>
+        <td>{{ question.cost }}</td>
+        <td>{{ question.question_score }}</td>
+    {% endfor %}
+
+    </tr>
+</table>
+</body>
+
+<script type="text/javascript">
+
+    function startTimer(duration, display) {
+        var start = Date.now(),
+
+            diff,
+            minutes,
+            seconds;
+
+        function timer() {
+            // get the number of seconds that have elapsed since
+            // startTimer() was called
+            diff = duration - (((Date.now() - start) / 1000) | 0);
+
+            // does the same job as parseInt truncates the float
+            hours = (diff / 3600) | 0;
+            minutes = ((diff / 60) % 60) | 0;
+            seconds = (diff % 60) | 0;
+            hours = hours < 10 ? "0" + hours : hours;
+            minutes = minutes < 10 ? "0" + minutes : minutes;
+            seconds = seconds < 10 ? "0" + seconds : seconds;
+
+            display.textContent = hours + ":" + minutes + ":" + seconds;
+
+
+            if (diff <= 0) {
+                // add one second so that the count down starts at the full duration
+                // example 05:00 not 04:59
+                // start = Date.now() + 1000;
+                // window.location.replace("http:/comp/leaderboard/" );
+                window.location.replace(" {%url 'round2:leaderboard' user_id %}");
+            }
+
+        };
+        // we don't want to wait a full second before the timer starts
+        timer();
+        setInterval(timer, 1000);
+    }
+
+    window.onload = function () {
+        var v = "{{remaining_time}}";
+
+        display = document.querySelector('#time1');
+        startTimer(v, display);
+    };
+
+</script>
+</html>
+
+
+
